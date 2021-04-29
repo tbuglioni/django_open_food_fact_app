@@ -1,0 +1,1 @@
+# django_open_food_fact_app
