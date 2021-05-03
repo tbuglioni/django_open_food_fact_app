@@ -6,6 +6,10 @@ from account.forms import RegistrationForm, AccountAuthenticationForm, AccountUp
 def registration_view(request):
     context = {}
 
+    user = request.user
+    if user.is_authenticated:
+        return redirect("home")
+
     if request.POST:
         form = RegistrationForm(request.POST)
         if form.is_valid():
