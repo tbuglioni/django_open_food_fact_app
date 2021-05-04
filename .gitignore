@@ -130,3 +130,4 @@ dmypy.json
 Pipfile.lock
 Pipfile
 .vscode/settings.json
+.DS_Store
