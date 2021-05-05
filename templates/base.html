@@ -1,46 +1,14 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body>
-  <ul>
-      <li><a href="{% url "home" %}">Home</a></li>
-      {% if request.user.is_authenticated %}
-        <li><a href="{% url "account" %}">Account</a></li>
-        <li><a href="{% url "logout" %}">Logout</a></li>
-      {% else %}
-        <li><a href="{% url "login" %}">Login</a></li>
-        
-        <li><a href="{% url "register" %}">Register</a></li>
-      {% endif %}
+  {% include 'snippets/head.html' %}
+  <body id="page-top">
+    <!-- Navigation-->
+    {% include 'snippets/navigation.html' %}
 
-      {% if request.user.is_authenticated and request.user.is_superuser%}
-        <li><a href="{% url "admin:index" %}">Admin</a></li>
-      {% endif %}
-        <li><a href="{% url "legal" %}">Legal</a></li>
-        <li><a href="{% url "substitute:substitute" %}">substitute</a></li>
-        <li><a href="{% url "substitute:my_food" %}">my_food</a></li>
-      
-      
-    </ul>
-
-    
-    
-    {% if request.user.is_authenticated and request.user.is_superuser%}
-    <p>Your are Super User :) congrat</p>
-    {% elif request.user.is_authenticated %}
-    <p> Your pseudo : {{ request.user.username}}</p>
-    {% endif %}
-
-
-  
-    {% block content %}
-    
-
-    {% endblock content %}
+    <div>{% block content %}{% endblock content %}</div>
+    <!-- Footer-->
+    {% include 'snippets/footer.html' %}
   </body>
 </html>
