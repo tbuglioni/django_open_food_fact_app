@@ -18,19 +18,25 @@
             Trouvez un produit de susbtitution pour ceux que vous consommez tous
             les jours
           </h2>
-          <div class="col-lg-12 detail-separator"><form action="#" method="post" accept-charset="utf-8">
-            {% csrf_token %}
-            <div class="row form-group justify-content-center">
-              {{ form.query }}
+          <div class="col-lg-12 detail-separator">
+            <form
+              class=""
+              action="{% url 'substitute:substitute' %}"
+              method="get"
+              accept-charset="utf-8"
+            >
+              {% csrf_token %}
+              <input
+                id="searchForm"
+                class="form-controrl bg-light"
+                name="query"
+                placeholder="Chercher"
+              />
               <button id="submit_search" type="submit" class="btn btn-primary">
-                {{ form.query.label }}
+                Rechercher
               </button>
-            </div>
-          </form></div>
-          
-
-        
-
+            </form>
+          </div>
 
           <a class="btn btn-primary btn-xl js-scroll-trigger" href="#about"
             >Find Out More</a

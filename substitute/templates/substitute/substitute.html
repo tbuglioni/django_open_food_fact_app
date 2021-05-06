@@ -1,5 +1,23 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %} {% block content %} {% if not error %}
+<div>
+  <div>
+    <h1>Votre recherche</h1>
+    <p>{{search}}</p>
+    <p>{{products.name}}</p>
+    <p>{{products.product_nutriscore.name}}</p>
+  </div>
 
-<div>hello world in substitution</div>
+  {% for substitute in substitutes%}
 
-{{some_string}} {% endblock content %}
+  <div></div>
+  <div>
+    <a href="{{substitute.url}}" target="_blank">{{substitute.name}}</a>
+    {{substitute.store}} Nutriscore : {{substitute.product_nutriscore.name}}
+  </div>
+
+  {% endfor %}
+</div>
+{% else %}
+<p>{{error}}</p>
+
+{% endif %} {% endblock content %}

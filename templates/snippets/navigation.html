@@ -23,7 +23,12 @@
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav ml-auto my-2 my-lg-0">
         <li class="form-inline">
-          <form class="" action="#" method="post" accept-charset="utf-8">
+          <form
+            class=""
+            action="{% url 'substitute:substitute' %}"
+            method="get"
+            accept-charset="utf-8"
+          >
             {% csrf_token %}
             <input
               id="searchForm"
