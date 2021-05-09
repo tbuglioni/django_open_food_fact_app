@@ -32,7 +32,7 @@
             {% csrf_token %}
             <input
               id="searchForm"
-              class="form-controrl bg-light"
+              class="form-control bg-light"
               name="query"
               placeholder="Chercher"
             />
@@ -42,41 +42,38 @@
         {% if request.user.is_authenticated and request.user.is_staff %}
 
         <li class="nav-item">
-          <a class="nav-link js-scroll-trigger" href="{% url 'account' %}"
-            >Account</a
-          >
+          <a class="nav-link js-scroll-trigger" href="{% url 'account' %}">
+            <i class="far fa-user fa-2x"></i>
+          </a>
         </li>
         <li class="nav-item">
           <a
             class="nav-link js-scroll-trigger"
             href="{% url 'substitute:my_food' %}"
-            ><img
-              src="{% static 'assets/img/noun_Carrot.png' %}"
-              alt="logo"
-              style="height: 30px"
-          /></a>
+            ><i class="fas fa-carrot fa-2x"></i
+          ></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link js-scroll-trigger" href="{% url 'logout' %}"
-            >Logout</a
-          >
+          <a class="nav-link js-scroll-trigger" href="{% url 'logout' %}">
+            <i class="fas fa-sign-out-alt fa-2x"></i>
+          </a>
         </li>
         <li class="nav-item">
           <a class="nav-link js-scroll-trigger" href="{% url 'admin:index' %}"
-            >Admin</a
-          >
+            ><i class="fas fa-cogs fa-2x"></i
+          ></a>
         </li>
 
         {% else %}
         <li class="nav-item">
-          <a class="nav-link js-scroll-trigger" href="{% url 'login' %}"
-            >Login</a
-          >
+          <a class="nav-link js-scroll-trigger" href="{% url 'login' %}">
+            <i class="fas fa-sign-in-alt fa-2x"></i>
+          </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link js-scroll-trigger" href="{% url 'register' %}"
-            >Register</a
-          >
+          <a class="nav-link js-scroll-trigger" href="{% url 'register' %}">
+            <i class="fas fa-user-plus fa-2x"></i>
+          </a>
         </li>
 
         {% endif %}

@@ -26,21 +26,25 @@
               accept-charset="utf-8"
             >
               {% csrf_token %}
-              <input
-                id="searchForm"
-                class="form-controrl bg-light"
-                name="query"
-                placeholder="Chercher"
-              />
-              <button id="submit_search" type="submit" class="btn btn-primary">
-                Rechercher
-              </button>
+              <div class="row form-group justify-content-center">
+                <div class="input-group mb-3">
+                  <input
+                    id="searchForm"
+                    class="bg-light form-control"
+                    name="query"
+                    placeholder="Chercher"
+                  />
+                  <button
+                    id="submit_search"
+                    type="submit"
+                    class="btn btn-primary"
+                  >
+                    Rechercher
+                  </button>
+                </div>
+              </div>
             </form>
           </div>
-
-          <a class="btn btn-primary btn-xl js-scroll-trigger" href="#about"
-            >Find Out More</a
-          >
         </div>
       </div>
     </div>

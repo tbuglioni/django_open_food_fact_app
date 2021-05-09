@@ -1,7 +1,8 @@
-{% extends 'base.html' %} {% block content %}
-<div>
-  <h2>Login</h2>
+{% extends 'account/base.html' %}
 
+{% block title %}Login{% endblock title %}
+
+{% block account_body %}
   <form method="post">
     {% csrf_token %} {% for field in login_form %}
     <p>
@@ -17,7 +18,7 @@
     </div>
 
     {% endif %}
-    <button type="submit">Log in</button>
+    <button type="submit" class="btn btn-primary">Log in</button>
   </form>
 </div>
-{% endblock content %}
+{% endblock account_body %}
