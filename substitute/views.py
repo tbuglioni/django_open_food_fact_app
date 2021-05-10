@@ -2,7 +2,7 @@ from functools import reduce
 import operator
 
 from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from .models import Nutriscore, Product, Tag
 from django.db.models import Count, Min, Max, Avg, Q
 
@@ -79,3 +79,24 @@ def my_food_view(request):
         context["favorites"] = favorite
 
     return render(request, "substitute/my_food.html", context)
+
+
+def add_fav_view(request):
+    user = request.user
+    fav = request.POST.get("fav")
+
+    prod = Product.objects.get(id=fav)
+
+    prod.users.add(user)
+
+    return JsonResponse({"operation_result": prod.name})
+
+
+def rmv_fav_view(request):
+    user = request.user
+    fav = request.POST.get("fav")
+
+    prod = Product.objects.get(id=fav)
+    prod.users.remove(user)
+
+    return JsonResponse({"operation_result": prod.name})

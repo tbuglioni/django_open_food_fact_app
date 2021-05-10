@@ -4,8 +4,41 @@
   {% for favorite in favorites %}
 
   <div>{{favorite.name}}</div>
+  <button value="{{favorite.id}}">delete from Favorite</button>
 
   {% endfor %}
 </div>
+
+<p id="operation"></p>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+<script>
+  $("button").click(function () {
+    event.preventDefault();
+
+    alert($(this).val());
+    let form = new FormData();
+
+    form.append("fav", $(this).val());
+    let csrfTokenValue = document.querySelector("[name=csrfmiddlewaretoken]")
+      .value;
+    let request = new Request("{% url 'substitute:rmv_fav' %}", {
+      method: "POST",
+      body: form,
+      headers: { "X-CSRFToken": csrfTokenValue },
+    });
+    fetch(request)
+      .then((response) => response.json())
+      .then((result) => {
+        let resultParagraph = document.querySelector("#operation");
+        resultParagraph.innerHTML = result["operation_result"];
+      });
+  });
+
+  document
+    .querySelector("#fetch-call")
+    .addEventListener("click", (event) => {});
+</script>
 
 {% endblock content %}

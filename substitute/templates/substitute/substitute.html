@@ -13,6 +13,7 @@
   <div>
     <a href="{{substitute.url}}" target="_blank">{{substitute.name}}</a>
     {{substitute.store}} Nutriscore : {{substitute.product_nutriscore.name}}
+    <button value="{{substitute.id}}">add to Favorite</button>
   </div>
 
   {% endfor %}
@@ -20,4 +21,36 @@
 {% else %}
 <p>{{error}}</p>
 
-{% endif %} {% endblock content %}
+{% endif %}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+<script>
+  $("button").click(function () {
+    event.preventDefault();
+
+    alert("produit ajouté");
+    let form = new FormData();
+
+    form.append("fav", $(this).val());
+    let csrfTokenValue = document.querySelector("[name=csrfmiddlewaretoken]")
+      .value;
+    let request = new Request("{% url 'substitute:add_fav' %}", {
+      method: "POST",
+      body: form,
+      headers: { "X-CSRFToken": csrfTokenValue },
+    });
+    fetch(request)
+      .then((response) => response.json())
+      .then((result) => {
+        let resultParagraph = document.querySelector("#operation");
+        resultParagraph.innerHTML = result["operation_result"];
+      });
+  });
+
+  document
+    .querySelector("#fetch-call")
+    .addEventListener("click", (event) => {});
+</script>
+
+{% endblock content %}
