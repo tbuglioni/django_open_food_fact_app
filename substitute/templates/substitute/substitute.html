@@ -13,7 +13,7 @@
   <div>
     <a href="{{substitute.url}}" target="_blank">{{substitute.name}}</a>
     {{substitute.store}} Nutriscore : {{substitute.product_nutriscore.name}}
-    <button value="{{substitute.id}}">add to Favorite</button>
+    <button class="fav" value="{{substitute.id}}">add to Favorite</button>
   </div>
 
   {% endfor %}
@@ -26,7 +26,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
 <script>
-  $("button").click(function () {
+  $(".fav").click(function () {
     event.preventDefault();
 
     alert("produit ajouté");

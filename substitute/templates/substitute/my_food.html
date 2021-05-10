@@ -4,7 +4,7 @@
   {% for favorite in favorites %}
 
   <div>{{favorite.name}}</div>
-  <button value="{{favorite.id}}">delete from Favorite</button>
+  <button class="fav" value="{{favorite.id}}">delete from Favorite</button>
 
   {% endfor %}
 </div>
@@ -14,7 +14,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
 <script>
-  $("button").click(function () {
+  $(".fav").click(function () {
     event.preventDefault();
 
     alert($(this).val());
