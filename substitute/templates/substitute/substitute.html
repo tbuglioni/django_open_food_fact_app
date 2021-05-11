@@ -1,24 +1,32 @@
-{% extends 'base.html' %} {% block content %} {% if not error %}
-<div>
-  <div>
-    <h1>Votre recherche</h1>
-    <p>{{search}}</p>
-    <p>{{products.name}}</p>
-    <p>{{products.product_nutriscore.name}}</p>
-  </div>
-
-  {% for substitute in substitutes%}
-
+{% extends 'substitute/base.html' %}
+<div></div>
+{% block substitute-content %} {% if not error %}
+<div></div>
+{% for substitute in substitutes%}
+<div class="col-md-4 border rounded mt-5">
   <div></div>
-  <div>
-    <a href="{{substitute.url}}" target="_blank">{{substitute.name}}</a>
-    {{substitute.store}} Nutriscore : {{substitute.product_nutriscore.name}}
-    <button class="fav" value="{{substitute.id}}">add to Favorite</button>
-  </div>
+  <h3>
+    {{substitute.name}} {% if request.user.is_authenticated %}<button
+      class="fav btn btn-primary"
+      value="{{substitute.id}}"
+    >
+      <i class="fas fa-heart"></i>
+    </button>
 
-  {% endfor %}
+    {% endif %}
+  </h3>
+  <div class="row border rounded">
+    <div class="col-12">Nutriscore: {{substitute.product_nutriscore.name}}</div>
+    <div class="col-12">Magasin: {{substitute.store}}</div>
+  </div>
+  <a href="{{substitute.url}}"
+    ><img
+      src="{{substitute.image_url}}"
+      alt="{{substitute.name}}"
+      style="width: 10rem"
+  /></a>
 </div>
-{% else %}
+{% endfor %} {% else %}
 <p>{{error}}</p>
 
 {% endif %}
@@ -33,8 +41,9 @@
     let form = new FormData();
 
     form.append("fav", $(this).val());
-    let csrfTokenValue = document.querySelector("[name=csrfmiddlewaretoken]")
-      .value;
+    let csrfTokenValue = document.querySelector(
+      "[name=csrfmiddlewaretoken]"
+    ).value;
     let request = new Request("{% url 'substitute:add_fav' %}", {
       method: "POST",
       body: form,
@@ -53,4 +62,4 @@
     .addEventListener("click", (event) => {});
 </script>
 
-{% endblock content %}
+{% endblock substitute-content %}

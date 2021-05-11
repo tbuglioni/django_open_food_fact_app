@@ -1,0 +1,16 @@
+{% extends 'base.html' %} {% block content %}
+
+<section class="page-section bg-primary" id="about">
+  <div class="container">
+    <div class="row">
+      <div class="row">
+        <div class="col-lg-12 text-center">
+          <div class="row justify-content-center">
+            {% block substitute-content %}{% endblock substitute-content %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock content %}

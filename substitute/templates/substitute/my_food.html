@@ -1,15 +1,30 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'substitute/base.html' %}
+<div></div>
 
-<div>
-  {% for favorite in favorites %}
+{% block substitute-content %} {% for favorite in favorites %}
+<div class="col-md-4 border rounded mt-5">
+  <h3>
+    {{favorite.name}}<button
+      class="fav btn btn-primary"
+      value="{{favorite.id}}"
+    >
+      <i class="fas fa-heart-broken"></i>
+    </button>
+  </h3>
+  <div class="row border rounded">
+    <div class="col-12">Nutriscore: {{favorite.product_nutriscore.name}}</div>
+    <div class="col-12">Magasin: {{favorite.store}}</div>
+  </div>
 
-  <div>{{favorite.name}}</div>
-  <button class="fav" value="{{favorite.id}}">delete from Favorite</button>
-
-  {% endfor %}
+  <a href="{{favorite.url}}"
+    ><img
+      src="{{favorite.image_url}}"
+      alt="{{favorite.name}}"
+      style="width: 10rem"
+  /></a>
+  <div></div>
 </div>
-
-<p id="operation"></p>
+{% endfor %}
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
@@ -17,12 +32,13 @@
   $(".fav").click(function () {
     event.preventDefault();
 
-    alert($(this).val());
+    alert("produit supprimé");
     let form = new FormData();
 
     form.append("fav", $(this).val());
-    let csrfTokenValue = document.querySelector("[name=csrfmiddlewaretoken]")
-      .value;
+    let csrfTokenValue = document.querySelector(
+      "[name=csrfmiddlewaretoken]"
+    ).value;
     let request = new Request("{% url 'substitute:rmv_fav' %}", {
       method: "POST",
       body: form,
@@ -40,5 +56,4 @@
     .querySelector("#fetch-call")
     .addEventListener("click", (event) => {});
 </script>
-
-{% endblock content %}
+{% endblock substitute-content %}
