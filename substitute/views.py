@@ -14,7 +14,15 @@ def substitute_views(request):
     # find with name
 
     try:
-        list_query = reduce(operator.and_, (Q(name__istartswith=item) for item in srh))
+
+        if len(srh) == 1:
+            list_query = reduce(
+                operator.and_, (Q(name__istartswith=item) for item in srh)
+            )
+        else:
+            list_query = reduce(
+                operator.and_, (Q(name__icontains=item) for item in srh)
+            )
 
         current_product = Product.objects.filter(list_query)[0]
         # current_product = Product.objects.filter(name__istartswith=srh)[0]
@@ -22,15 +30,15 @@ def substitute_views(request):
 
         target_nutriscore = "a"
         if current_product.product_nutriscore.name == "e":
-            target_nutriscore = "d"
+            target_nutriscore = ["a", "b", "c", "d"]
         elif current_product.product_nutriscore.name == "d":
-            target_nutriscore = "c"
+            target_nutriscore = ["a", "b", "c"]
         elif current_product.product_nutriscore.name == "c":
-            target_nutriscore = "b"
+            target_nutriscore = ["a", "b"]
         elif current_product.product_nutriscore.name == "b":
-            target_nutriscore = "a"
+            target_nutriscore = ["a"]
         else:
-            target_nutriscore = "a"
+            target_nutriscore = ["a"]
 
         # get most popular tags
         all_tag = (
@@ -39,12 +47,21 @@ def substitute_views(request):
             .filter(id__in=product_tags)
         )
 
-        product_substitute = (
-            Product.objects.filter(product_nutriscore__name=target_nutriscore)
-            .filter(tags=all_tag[0])
-            .filter(tags=all_tag[1])
-            .filter(tags=all_tag[2])[:5]
-        )
+        product_substitute = Product.objects.filter(
+            product_nutriscore__name__in=target_nutriscore
+        ).filter(name__icontains=srh)
+
+        if len(product_substitute) <= 3:
+            product_substitute = (
+                Product.objects.filter(product_nutriscore__name__in=target_nutriscore)
+                .filter(tags=all_tag[0])
+                .filter(tags=all_tag[1])
+                .filter(tags=all_tag[2])[:10]
+            )
+
+        if len(product_substitute) == 0:
+            context["error"] = "oula bonne question ... euh ... on a rien trouvé :/"
+
         context["substitutes"] = product_substitute
         context["products"] = current_product
     except IndexError:
