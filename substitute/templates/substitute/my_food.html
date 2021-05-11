@@ -15,13 +15,14 @@
     <div class="col-12">Nutriscore: {{favorite.product_nutriscore.name}}</div>
     <div class="col-12">Magasin: {{favorite.store}}</div>
   </div>
-
-  <a href="{{favorite.url}}"
-    ><img
-      src="{{favorite.image_url}}"
-      alt="{{favorite.name}}"
-      style="width: 10rem"
-  /></a>
+  <div class="row justify-content-center">
+    <a href="{{favorite.url}}"
+      ><img
+        src="{{favorite.image_url}}"
+        alt="{{favorite.name}}"
+        style="width: 10rem"
+    /></a>
+  </div>
   <div></div>
 </div>
 {% endfor %}
