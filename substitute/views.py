@@ -72,18 +72,6 @@ def substitute_views(request):
     return render(request, "substitute/substitute.html", context)
 
 
-def index(request):
-    if request.method == "POST":
-        form = ProductSearchForm(request.POST)
-        if form.is_valid():
-            query = form.cleaned_data.get("query")
-            return redirect("substitute:results", query=query)
-    else:
-        form = ProductSearchForm()
-    context = {"form": form}
-    return render(request, "substitute/index.html", context)
-
-
 def my_food_view(request):
     user = request.user
     if not user.is_authenticated:
@@ -100,6 +88,8 @@ def my_food_view(request):
 
 def add_fav_view(request):
     user = request.user
+    if not user.is_authenticated:
+        return redirect("home")
     fav = request.POST.get("fav")
 
     prod = Product.objects.get(id=fav)
@@ -111,6 +101,8 @@ def add_fav_view(request):
 
 def rmv_fav_view(request):
     user = request.user
+    if not user.is_authenticated:
+        return redirect("home")
     fav = request.POST.get("fav")
 
     prod = Product.objects.get(id=fav)

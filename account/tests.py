@@ -88,3 +88,34 @@ class UserTestCase(TestCase):
         response = self.client.get(reverse("account"))
         self.assertTemplateUsed(response, "account/account.html")
         self.client.logout
+
+    def test_login_post(self):
+        response = self.client.post(
+            reverse("login"),
+            {"email": "john@invalid.com", "password": "some_123_password"},
+        )
+        self.assertEqual(response.status_code, 302)
+
+    def test_register_post(self):
+        response = self.client.post(
+            reverse("register"),
+            {
+                "email": "johnn@invalid.com",
+                "username": "johny",
+                "password1": "some_123_password",
+                "password2": "some_123_password",
+            },
+        )
+        self.assertEqual(response.status_code, 302)
+
+    def test_login_post_invalid(self):
+        response = self.client.post(
+            reverse("register"),
+            {
+                "email": "johnninvalid.com",
+                "username": "johnnny",
+                "password1": "some_123_password",
+                "password2": "some_123_password",
+            },
+        )
+        self.assertEqual(response.status_code, 200)

@@ -1,5 +1,6 @@
 import requests
 
+from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 from unittest.mock import MagicMock
@@ -8,6 +9,8 @@ from substitute.data_import import ImportApi
 from substitute.data_import import Cleaner
 from substitute.data_import import Adder
 from substitute.data_import.link_api_db import LinkApiDb
+
+User = get_user_model()
 
 
 class TestSubstitute(TestCase):
@@ -23,6 +26,20 @@ class TestSubstitute(TestCase):
             image_url="http://myapp.com",
             product_nutriscore=self.a,
         )
+        self.product2 = Product.objects.create(
+            name="coca",
+            store="store1",
+            url="http://myapp.com",
+            image_url="http://myapp.com",
+            product_nutriscore=self.c,
+        )
+        self.product3 = Product.objects.create(
+            name="sirop",
+            store="store1",
+            url="http://myapp.com",
+            image_url="http://myapp.com",
+            product_nutriscore=self.b,
+        )
 
         self.tags1 = Tag.objects.create(name="boisson")
         self.tags2 = Tag.objects.create(name="liquide")
@@ -30,6 +47,15 @@ class TestSubstitute(TestCase):
         self.tags1.products.add(self.product1)
         self.tags2.products.add(self.product1)
         self.tags3.products.add(self.product1)
+
+        user_a = User(username="john", email="john@invalid.com")
+        user_a_pw = "some_123_password"
+        self.user_a_pw = user_a_pw
+        user_a.is_staff = True
+        user_a.is_superuser = False
+        user_a.set_password(user_a_pw)
+        user_a.save()
+        self.user_a = user_a
 
     # models
     def test_5_nutriscore_existing(self):
@@ -57,6 +83,48 @@ class TestSubstitute(TestCase):
         self.assertEqual(str(self.tags1), "boisson")
 
     # views
+
+    def test_my_food_url(self):
+        response = self.client.get(
+            reverse("substitute:substitute"), kwargs={"query": "coca"}
+        )
+        self.assertEqual(len(response.context["substitutes"]), 2)
+
+    def test_my_food_url(self):
+        response = self.client.get(reverse("substitute:my_food"))
+        self.assertEqual(response.status_code, 302)
+
+    def test_my_food_url_log(self):
+        self.client.login(email="john@invalid.com", password="some_123_password")
+        self.product1.users.add(self.user_a)
+        response = self.client.get(reverse("substitute:my_food"))
+        self.assertEqual(response.status_code, 200)
+
+        self.assertEqual(len(response.context["favorites"]), 1)
+
+    def test_add_fav_url(self):
+        response = self.client.get(reverse("substitute:add_fav"))
+        self.assertEqual(response.status_code, 302)
+
+    def test_add_fav_url_log(self):
+        self.client.login(email="john@invalid.com", password="some_123_password")
+
+        response = self.client.post(reverse("substitute:add_fav"), {"fav": "1"})
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_rmv_fav_url(self):
+        response = self.client.get(reverse("substitute:rmv_fav"))
+        self.assertEqual(response.status_code, 302)
+
+    def test_rmv_fav_url_log(self):
+        self.client.login(email="john@invalid.com", password="some_123_password")
+        self.product1.users.add(self.user_a)
+
+        response = self.client.post(reverse("substitute:rmv_fav"), {"fav": "1"})
+
+        self.assertEqual(response.status_code, 200)
+
     # templates
 
 
