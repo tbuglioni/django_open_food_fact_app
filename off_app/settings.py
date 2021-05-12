@@ -29,7 +29,7 @@ else:
     DEBUG = True
 
 
-ALLOWED_HOSTS = ["off_app_tb.herokuapp.com"]
+ALLOWED_HOSTS = ["off-app-tb.herokuapp.com"]
 
 
 # Application definition
