@@ -23,10 +23,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG")
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["off-app-tb.herokuapp.com", "127.0.0.1"]
 
 
 # Application definition
@@ -81,11 +81,11 @@ WSGI_APPLICATION = "off_app.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "off_app",
-        "USER": "thomasbuglioni",
-        "PASSWORD": "",
-        "HOST": "127.0.0.1",
-        "PORT": "5432",
+        "NAME": os.getenv("DB_NAME"),
+        "USER": os.getenv("DB_USER"),
+        "PASSWORD": os.getenv("DB_PASSWORD"),
+        "HOST": os.getenv("DB_HOST"),
+        "PORT": os.getenv("DB_PORT"),
     }
 }
 
@@ -130,25 +130,9 @@ STATIC_URL = "/static/"
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "account.Account"
-
-# if os.environ.get("ENV") == "PRODUCTION":
-
-#     # Static files settings
-#     PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
-
-#
-
-#     # Extra places for collectstatic to find static files.
-#     STATICFILES_DIRS = (os.path.join(PROJECT_ROOT, "static"),)
-#     STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-
-#     db_from_env = dj_database_url.config(conn_max_age=500)
-#     DATABASES['default'].update(db_from_env)
-
-# heroku
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
