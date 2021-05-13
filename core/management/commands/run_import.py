@@ -8,4 +8,4 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         obj = LinkApiDb()
-        obj.add_in_table(1, 150)
+        obj.add_in_table(1, 2)

@@ -78,6 +78,7 @@ WSGI_APPLICATION = "off_app.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+# server
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
@@ -88,6 +89,18 @@ DATABASES = {
         "PORT": os.getenv("DB_PORT"),
     }
 }
+
+# local
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": os.getenv("DB_NAME_local"),
+#         "USER": os.getenv("DB_USER_local"),
+#         "PASSWORD": os.getenv("DB_PASSWORD_local"),
+#         "HOST": os.getenv("DB_HOST_local"),
+#         "PORT": os.getenv("DB_PORT_local"),
+#     }
+# }
 
 
 # Password validation
