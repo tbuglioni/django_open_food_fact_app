@@ -1,5 +1,6 @@
 from functools import reduce
 import operator
+from django.utils.encoding import uri_to_iri
 
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect, JsonResponse
@@ -7,9 +8,23 @@ from .models import Nutriscore, Product, Tag
 from django.db.models import Count, Min, Max, Avg, Q
 
 
-def substitute_views(request):
+def check_query_views(request):
+
+    if request.method == "POST":
+        if not request.POST.get("query"):
+            return redirect("home")
+        else:
+
+            query = request.POST.get("query")
+            return redirect("substitute:substitute", query=query)
+    else:
+        return redirect("home")
+
+
+def substitute_views(request, query):
+    query = uri_to_iri(query)
     context = {}
-    srh = request.GET["query"]
+    srh = query
     srh = [elt for elt in srh.split(" ")]
     # find with name
 

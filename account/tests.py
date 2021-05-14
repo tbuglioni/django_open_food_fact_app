@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.conf import settings
+from .forms import AccountUpdateForm
 
 User = get_user_model()
 
@@ -118,4 +119,39 @@ class UserTestCase(TestCase):
                 "password2": "some_123_password",
             },
         )
+        self.assertEqual(response.status_code, 200)
+
+
+class test_form_valid(TestCase):
+    def setUp(self):
+
+        user_a = User(username="john", email="john@invalid.com")
+        user_a_pw = "some_123_password"
+        self.user_a_pw = user_a_pw
+        user_a.is_staff = True
+        user_a.is_superuser = False
+        user_a.set_password(user_a_pw)
+        user_a.save()
+        self.user_a = user_a
+
+    def test_account_update_form(self):
+        self.client.login(email="john@invalid.com", password="some_123_password")
+
+        response = self.client.post(
+            reverse("account"), data={"mail": "test321@gmail.com"}
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_register_form(self):
+        response = self.client.post(
+            reverse("register"),
+            data={
+                "mail": "test321@gmail.com",
+                "username": "test123",
+                "password1": "some_123_password",
+                "password2": "some_123_password",
+            },
+        )
+
         self.assertEqual(response.status_code, 200)

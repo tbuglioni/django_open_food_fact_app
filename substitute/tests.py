@@ -40,13 +40,33 @@ class TestSubstitute(TestCase):
             image_url="http://myapp.com",
             product_nutriscore=self.b,
         )
+        self.product4 = Product.objects.create(
+            name="coca cola light",
+            store="store1",
+            url="http://myapp.com",
+            image_url="http://myapp.com",
+            product_nutriscore=self.b,
+        )
 
         self.tags1 = Tag.objects.create(name="boisson")
         self.tags2 = Tag.objects.create(name="liquide")
         self.tags3 = Tag.objects.create(name="naturel")
+
         self.tags1.products.add(self.product1)
         self.tags2.products.add(self.product1)
         self.tags3.products.add(self.product1)
+
+        self.tags1.products.add(self.product2)
+        self.tags2.products.add(self.product2)
+        self.tags3.products.add(self.product2)
+
+        self.tags1.products.add(self.product3)
+        self.tags2.products.add(self.product3)
+        self.tags3.products.add(self.product3)
+
+        self.tags1.products.add(self.product4)
+        self.tags2.products.add(self.product4)
+        self.tags3.products.add(self.product4)
 
         user_a = User(username="john", email="john@invalid.com")
         user_a_pw = "some_123_password"
@@ -84,11 +104,41 @@ class TestSubstitute(TestCase):
 
     # views
 
-    def test_my_food_url(self):
-        response = self.client.get(
-            reverse("substitute:substitute"), kwargs={"query": "coca"}
-        )
-        self.assertEqual(len(response.context["substitutes"]), 2)
+    def test_check_query_url_empty_redirect(self):
+
+        response = self.client.post(reverse("substitute:check_query"), {"query": ""})
+        self.assertEqual(response.status_code, 302)
+
+    def test_check_query_url_data_redirect(self):
+        query = "cola"
+        response = self.client.post(reverse("substitute:check_query"), {"query": query})
+        self.assertEqual(response.status_code, 302)
+
+    def test_check_query_url_GET_redirect(self):
+        response = self.client.get(reverse("substitute:check_query"))
+        self.assertEqual(response.status_code, 302)
+
+    def test_substitute(self):
+        query = "cola"
+        response = self.client.get(reverse("substitute:substitute", args=(query,)))
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_substitute_context_1(self):
+        query = "cola"
+        response = self.client.get(reverse("substitute:substitute", args=(query,)))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.context["error"])
+
+    def test_substitute_context_2(self):
+        query = "coca cola"
+        response = self.client.get(reverse("substitute:substitute", args=(query,)))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.context["substitutes"])
+        self.assertTrue(response.context["products"])
+        self.assertEqual(len(response.context["substitutes"]), 1)
 
     def test_my_food_url(self):
         response = self.client.get(reverse("substitute:my_food"))
@@ -109,7 +159,10 @@ class TestSubstitute(TestCase):
     def test_add_fav_url_log(self):
         self.client.login(email="john@invalid.com", password="some_123_password")
 
-        response = self.client.post(reverse("substitute:add_fav"), {"fav": "1"})
+        test_product = Product.objects.get(name="coca")
+        response = self.client.post(
+            reverse("substitute:add_fav"), {"fav": test_product.id}
+        )
 
         self.assertEqual(response.status_code, 200)
 
@@ -119,9 +172,13 @@ class TestSubstitute(TestCase):
 
     def test_rmv_fav_url_log(self):
         self.client.login(email="john@invalid.com", password="some_123_password")
-        self.product1.users.add(self.user_a)
 
-        response = self.client.post(reverse("substitute:rmv_fav"), {"fav": "1"})
+        test_product = Product.objects.get(name="coca")
+        test_product.users.add(self.user_a)
+
+        response = self.client.post(
+            reverse("substitute:rmv_fav"), {"fav": test_product.id}
+        )
 
         self.assertEqual(response.status_code, 200)
 
@@ -148,7 +205,7 @@ class TestDataImport(TestCase):
                             "brands": "evian",
                             "url": "http://myapp.com",
                             "image_url": "http://myapp.com",
-                        }
+                        },
                     ]
                 }
 
@@ -235,13 +292,13 @@ class TestDataAdder(TestCase):
         self.assertEqual(nbr, 1)
 
 
-# class TestLinkApiDB(TestCase):
-#     def setUp(self):
-#         self.link = LinkApiDb()
+class TestLinkApiDB(TestCase):
+    def setUp(self):
+        self.link = LinkApiDb()
 
-#     def test_data_from_api_to_db(self):
+    def test_data_from_api_to_db(self):
 
-#         self.link.add_in_table(1, 1)
+        self.link.add_in_table(1, 1)
 
-#         nbr_items = Product.objects.all().count()
-#         self.assertEqual(nbr_items, 1)
+        nbr_items = Product.objects.all().count()
+        self.assertEqual(nbr_items, 0)

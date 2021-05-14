@@ -21,8 +21,8 @@
           <div class="col-lg-12 detail-separator">
             <form
               class=""
-              action="{% url 'substitute:substitute' %}"
-              method="get"
+              action="{% url 'substitute:check_query' %}"
+              method="post"
               accept-charset="utf-8"
             >
               {% csrf_token %}
