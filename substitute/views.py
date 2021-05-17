@@ -1,11 +1,7 @@
-from functools import reduce
-import operator
-from django.utils.encoding import uri_to_iri
-
+from .class_substitute import SubstituteViews
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
-from .models import Product, Tag
-from django.db.models import Count, Q
+from .models import Product
 
 
 def check_query_views(request):
@@ -22,75 +18,8 @@ def check_query_views(request):
 
 
 def substitute_views(request, query):
-    query = uri_to_iri(query)
-    context = {}
-    srh = query
-    srh = [elt for elt in srh.split(" ")]
-    # find with name
-
-    try:
-
-        if len(srh) == 1:
-            list_query = reduce(
-                operator.and_, (
-                    Q(name__istartswith=item) |
-                    Q(name__icontains=(" ", item, " ")) |
-                    Q(name__iendswith=(" ", item)) for item in srh)
-            )
-        else:
-            list_query = reduce(
-                operator.and_, (Q(name__icontains=item) for item in srh)
-            )
-
-        current_product = Product.objects.filter(list_query)[0]
-        # current_product = Product.objects.filter(name__istartswith=srh)[0]
-        product_tags = Tag.objects.filter(products__id=current_product.id)
-
-        target_nutriscore = "a"
-        if current_product.product_nutriscore.name == "e":
-            target_nutriscore = ["a", "b", "c", "d"]
-        elif current_product.product_nutriscore.name == "d":
-            target_nutriscore = ["a", "b", "c"]
-        elif current_product.product_nutriscore.name == "c":
-            target_nutriscore = ["a", "b"]
-        elif current_product.product_nutriscore.name == "b":
-            target_nutriscore = ["a"]
-        else:
-            target_nutriscore = ["a"]
-
-        # get most popular tags
-        all_tag = (
-            Tag.objects.annotate(Count("products"))
-            .order_by("-products__count")
-            .filter(id__in=product_tags)
-        )
-
-        product_substitute = Product.objects.filter(
-            product_nutriscore__name__in=target_nutriscore
-        ).filter(name__icontains=srh)
-
-        if len(product_substitute) <= 3:
-            product_substitute = (
-                Product.objects.filter(
-                    product_nutriscore__name__in=target_nutriscore)
-                .filter(tags=all_tag[0])
-                .filter(tags=all_tag[1])
-                .filter(tags=all_tag[2])[:12]
-            )
-
-        if len(product_substitute) == 0:
-            context["error"] = ("oula bonne question ..."
-                                " euh ... on a rien trouvé :/")
-
-        context["substitutes"] = product_substitute
-        context["products"] = current_product
-    except IndexError:
-        context["error"] = ("oula bonne question ..."
-                            " euh ... on a rien trouvé :/")
-
-    context["search"] = srh
-
-    return render(request, "substitute/substitute.html", context)
+    object_substitute = SubstituteViews()
+    return object_substitute.run_substitute(request, query)
 
 
 def my_food_view(request):
