@@ -35,11 +35,13 @@ class Cleaner:
                         and product["url"]
                         and product["image_url"]
                     ):
-                        new_name = self.__cleaner_mono_entry(product["product_name"])
+                        new_name = self.__cleaner_mono_entry(
+                            product["product_name"])
                         new_nutrition_grades = self.__cleaner_mono_entry(
                             product["nutrition_grades"]
                         )
-                        new_stores = self.__cleaner_mono_entry(product["stores"])
+                        new_stores = self.__cleaner_mono_entry(
+                            product["stores"])
                         new_categories = self.__cleaner_multiples_entry(
                             product["categories"]
                         )

@@ -17,20 +17,25 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Nutriscore',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=1, unique=True)),
             ],
         ),
         migrations.CreateModel(
             name='Product',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=200, unique=True)),
                 ('store', models.CharField(max_length=255)),
                 ('url', models.URLField()),
                 ('image_url', models.URLField()),
-                ('product_nutriscore', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='substitute.nutriscore')),
-                ('users', models.ManyToManyField(blank=True, to=settings.AUTH_USER_MODEL)),
+                ('product_nutriscore', models.ForeignKey(blank=True, null=True,
+                 on_delete=django.db.models.deletion.SET_NULL,
+                 to='substitute.nutriscore')),
+                ('users', models.ManyToManyField(
+                    blank=True, to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'ordering': ['product_nutriscore', 'name'],
@@ -39,9 +44,11 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Tag',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=200)),
-                ('products', models.ManyToManyField(blank=True, related_name='tags', to='substitute.Product')),
+                ('products', models.ManyToManyField(blank=True,
+                 related_name='tags', to='substitute.Product')),
             ],
             options={
                 'ordering': ['name'],

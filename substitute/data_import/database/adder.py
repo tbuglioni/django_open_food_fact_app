@@ -1,6 +1,5 @@
 import tqdm
 from substitute.models import Nutriscore, Product, Tag
-from account.models import Account
 from django.db import IntegrityError, DataError
 
 

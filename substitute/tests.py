@@ -5,9 +5,9 @@ from django.test import TestCase
 from django.urls import reverse
 from unittest.mock import MagicMock
 from substitute.models import Nutriscore, Product, Tag
-from substitute.data_import import ImportApi
-from substitute.data_import import Cleaner
-from substitute.data_import import Adder
+from substitute.data_import.api.import_api import ImportApi
+from substitute.data_import.api.cleaner import Cleaner
+from substitute.data_import.database.adder import Adder
 from substitute.data_import.link_api_db import LinkApiDb
 
 User = get_user_model()
@@ -106,12 +106,14 @@ class TestSubstitute(TestCase):
 
     def test_check_query_url_empty_redirect(self):
 
-        response = self.client.post(reverse("substitute:check_query"), {"query": ""})
+        response = self.client.post(
+            reverse("substitute:check_query"), {"query": ""})
         self.assertEqual(response.status_code, 302)
 
     def test_check_query_url_data_redirect(self):
         query = "cola"
-        response = self.client.post(reverse("substitute:check_query"), {"query": query})
+        response = self.client.post(
+            reverse("substitute:check_query"), {"query": query})
         self.assertEqual(response.status_code, 302)
 
     def test_check_query_url_GET_redirect(self):
@@ -120,20 +122,23 @@ class TestSubstitute(TestCase):
 
     def test_substitute(self):
         query = "cola"
-        response = self.client.get(reverse("substitute:substitute", args=(query,)))
+        response = self.client.get(
+            reverse("substitute:substitute", args=(query,)))
 
         self.assertEqual(response.status_code, 200)
 
     def test_substitute_context_1(self):
         query = "cola"
-        response = self.client.get(reverse("substitute:substitute", args=(query,)))
+        response = self.client.get(
+            reverse("substitute:substitute", args=(query,)))
 
         self.assertEqual(response.status_code, 200)
         self.assertTrue(response.context["error"])
 
     def test_substitute_context_2(self):
         query = "coca cola"
-        response = self.client.get(reverse("substitute:substitute", args=(query,)))
+        response = self.client.get(
+            reverse("substitute:substitute", args=(query,)))
 
         self.assertEqual(response.status_code, 200)
         self.assertTrue(response.context["substitutes"])
@@ -145,7 +150,8 @@ class TestSubstitute(TestCase):
         self.assertEqual(response.status_code, 302)
 
     def test_my_food_url_log(self):
-        self.client.login(email="john@invalid.com", password="some_123_password")
+        self.client.login(email="john@invalid.com",
+                          password="some_123_password")
         self.product1.users.add(self.user_a)
         response = self.client.get(reverse("substitute:my_food"))
         self.assertEqual(response.status_code, 200)
@@ -157,7 +163,8 @@ class TestSubstitute(TestCase):
         self.assertEqual(response.status_code, 302)
 
     def test_add_fav_url_log(self):
-        self.client.login(email="john@invalid.com", password="some_123_password")
+        self.client.login(email="john@invalid.com",
+                          password="some_123_password")
 
         test_product = Product.objects.get(name="coca")
         response = self.client.post(
@@ -171,7 +178,8 @@ class TestSubstitute(TestCase):
         self.assertEqual(response.status_code, 302)
 
     def test_rmv_fav_url_log(self):
-        self.client.login(email="john@invalid.com", password="some_123_password")
+        self.client.login(email="john@invalid.com",
+                          password="some_123_password")
 
         test_product = Product.objects.get(name="coca")
         test_product.users.add(self.user_a)

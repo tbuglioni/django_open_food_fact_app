@@ -83,7 +83,8 @@ class ImportApi:
             products = results["products"]
             self.imported_file = products
         else:
-            print("get file : there no file to get, status code : ", self.status_code)
+            print("get file : there no file to get, status code : ",
+                  self.status_code)
 
     def execute_import(self, nbr_page=1, size_page=1000):
         self.__api_parameters(nbr_page, size_page)

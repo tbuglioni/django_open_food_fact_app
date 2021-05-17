@@ -1,8 +1,6 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.urls import reverse
-from django.conf import settings
-from .forms import AccountUpdateForm
 
 User = get_user_model()
 
@@ -23,7 +21,7 @@ class UserTestCase(TestCase):
     def test_user_exists(self):
         user_count = User.objects.all().count()
         self.assertEqual(user_count, 1)  # ==
-        self.assertNotEqual(user_count, 0)  #!=
+        self.assertNotEqual(user_count, 0)  # !=
 
     def test_user_password(self):
         self.assertTrue(self.user_a.check_password(self.user_a_pw))
@@ -47,7 +45,8 @@ class UserTestCase(TestCase):
         self.assertEqual(status_code, 200)
 
     def test_login_if_log(self):
-        self.client.login(email="john@invalid.com", password="some_123_password")
+        self.client.login(email="john@invalid.com",
+                          password="some_123_password")
         response = self.client.get(reverse("login"))
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, "/")
@@ -59,7 +58,8 @@ class UserTestCase(TestCase):
         self.assertRedirects(response, "/login/")
 
     def test_account_if_log(self):
-        self.client.login(email="john@invalid.com", password="some_123_password")
+        self.client.login(email="john@invalid.com",
+                          password="some_123_password")
         response = self.client.get(reverse("account"))
         self.assertEqual(response.status_code, 200)
         self.client.logout
@@ -69,7 +69,8 @@ class UserTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_register_if_log(self):
-        self.client.login(email="john@invalid.com", password="some_123_password")
+        self.client.login(email="john@invalid.com",
+                          password="some_123_password")
         response = self.client.get(reverse("register"))
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, "/")
@@ -85,7 +86,8 @@ class UserTestCase(TestCase):
         self.assertTemplateUsed(response, "account/register.html")
 
     def test_account_using_template(self):
-        self.client.login(email="john@invalid.com", password="some_123_password")
+        self.client.login(email="john@invalid.com",
+                          password="some_123_password")
         response = self.client.get(reverse("account"))
         self.assertTemplateUsed(response, "account/account.html")
         self.client.logout
@@ -135,7 +137,8 @@ class test_form_valid(TestCase):
         self.user_a = user_a
 
     def test_account_update_form(self):
-        self.client.login(email="john@invalid.com", password="some_123_password")
+        self.client.login(email="john@invalid.com",
+                          password="some_123_password")
 
         response = self.client.post(
             reverse("account"), data={"mail": "test321@gmail.com"}

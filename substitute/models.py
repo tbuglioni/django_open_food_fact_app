@@ -28,7 +28,8 @@ class Product(models.Model):
 
 class Tag(models.Model):
     name = models.CharField(max_length=200)
-    products = models.ManyToManyField("Product", related_name="tags", blank=True)
+    products = models.ManyToManyField(
+        "Product", related_name="tags", blank=True)
 
     def __str__(self):
         return self.name

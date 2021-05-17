@@ -3,9 +3,9 @@ import operator
 from django.utils.encoding import uri_to_iri
 
 from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect, JsonResponse
-from .models import Nutriscore, Product, Tag
-from django.db.models import Count, Min, Max, Avg, Q
+from django.http import JsonResponse
+from .models import Product, Tag
+from django.db.models import Count, Q
 
 
 def check_query_views(request):
@@ -68,19 +68,22 @@ def substitute_views(request, query):
 
         if len(product_substitute) <= 3:
             product_substitute = (
-                Product.objects.filter(product_nutriscore__name__in=target_nutriscore)
+                Product.objects.filter(
+                    product_nutriscore__name__in=target_nutriscore)
                 .filter(tags=all_tag[0])
                 .filter(tags=all_tag[1])
                 .filter(tags=all_tag[2])[:10]
             )
 
         if len(product_substitute) == 0:
-            context["error"] = "oula bonne question ... euh ... on a rien trouvé :/"
+            context["error"] = ("oula bonne question ..."
+                                " euh ... on a rien trouvé :/")
 
         context["substitutes"] = product_substitute
         context["products"] = current_product
     except IndexError:
-        context["error"] = "oula bonne question ... euh ... on a rien trouvé :/"
+        context["error"] = ("oula bonne question ..."
+                            " euh ... on a rien trouvé :/")
 
     context["search"] = srh
 
