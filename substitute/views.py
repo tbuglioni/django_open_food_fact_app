@@ -32,7 +32,10 @@ def substitute_views(request, query):
 
         if len(srh) == 1:
             list_query = reduce(
-                operator.and_, (Q(name__istartswith=item) for item in srh)
+                operator.and_, (
+                    Q(name__istartswith=item) |
+                    Q(name__icontains=(" ", item, " ")) |
+                    Q(name__iendswith=(" ", item)) for item in srh)
             )
         else:
             list_query = reduce(
@@ -72,7 +75,7 @@ def substitute_views(request, query):
                     product_nutriscore__name__in=target_nutriscore)
                 .filter(tags=all_tag[0])
                 .filter(tags=all_tag[1])
-                .filter(tags=all_tag[2])[:10]
+                .filter(tags=all_tag[2])[:12]
             )
 
         if len(product_substitute) == 0:

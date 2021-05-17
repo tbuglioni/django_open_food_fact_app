@@ -1,11 +1,23 @@
-{% extends 'substitute/base.html' %}
+{% extends 'substitute/base.html' %}{% load static %}
 <div></div>
 {% block substitute-content %} {% if not error %}
 <div></div>
+
 {% for substitute in substitutes%}
-<div class="col-md-4 border rounded mt-5">
+<div class="col-md-4 p-5 text-white font-weight-bold text-center">
   <div></div>
-  <h3>
+
+  <div class="row justify-content-center">
+    <a href="{{substitute.url}}"
+      ><img
+        class="img-fluid rounded"
+        src="{{substitute.image_url}}"
+        alt="{{substitute.name}}"
+        style="width: 10rem; height: 10rem"
+    /></a>
+  </div>
+
+  <div>
     {{substitute.name}} {% if request.user.is_authenticated %}<button
       class="fav btn btn-primary"
       value="{{substitute.id}}"
@@ -14,20 +26,41 @@
     </button>
 
     {% endif %}
-  </h3>
-  <div class="row border rounded">
-    <div class="col-12">Nutriscore: {{substitute.product_nutriscore.name}}</div>
-    <div class="col-12">Magasin: {{substitute.store}}</div>
   </div>
   <div class="row justify-content-center">
-    <a href="{{substitute.url}}"
-      ><img
-        class="m-auto"
-        src="{{substitute.image_url}}"
-        alt="{{substitute.name}}"
-        style="width: 10rem"
-    /></a>
+    {% if substitute.product_nutriscore.name == "a" %}
+    <img
+      src="{% static 'assets/img/nutriscore-a.svg' %}"
+      width="150"
+      height="50"
+    />
+    {% elif substitute.product_nutriscore.name == "b" %}
+    <img
+      src="{% static 'assets/img/nutriscore-b.svg' %}"
+      width="150"
+      height="50"
+    />
+    {% elif substitute.product_nutriscore.name == "c" %}
+    <img
+      src="{% static 'assets/img/nutriscore-c.svg' %}"
+      width="150"
+      height="50"
+    />
+    {% elif substitute.product_nutriscore.name == "d" %}
+    <img
+      src="{% static 'assets/img/nutriscore-d.svg' %}"
+      width="150"
+      height="50"
+    />
+    {% elif substitute.product_nutriscore.name == "e" %}
+    <img
+      src="{% static 'assets/img/nutriscore-e.svg' %}"
+      width="150"
+      height="50"
+    />
+    {% endif %}
   </div>
+  <div class="row-12 justify-content-center">Magasin: {{substitute.store}}</div>
 </div>
 {% endfor %} {% else %}
 <p>{{error}}</p>

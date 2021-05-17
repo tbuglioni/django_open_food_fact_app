@@ -1,28 +1,62 @@
-{% extends 'substitute/base.html' %}
+{% extends 'substitute/base.html' %}{% load static %}
 <div></div>
 
 {% block substitute-content %} {% for favorite in favorites %}
-<div class="col-md-4 border rounded mt-5">
-  <h3>
+<div class="col-md-4 p-5 text-white font-weight-bold text-center">
+  <div class="row justify-content-center">
+    <a href="{{favorite.url}}"
+      ><img
+        class="img-fluid rounded"
+        src="{{favorite.image_url}}"
+        alt="{{favorite.name}}"
+        style="width: 10rem; height: 10rem"
+    /></a>
+  </div>
+
+  <div>
     {{favorite.name}}<button
       class="fav btn btn-primary"
       value="{{favorite.id}}"
     >
       <i class="fas fa-heart-broken"></i>
     </button>
-  </h3>
-  <div class="row border rounded">
-    <div class="col-12">Nutriscore: {{favorite.product_nutriscore.name}}</div>
-    <div class="col-12">Magasin: {{favorite.store}}</div>
   </div>
+
   <div class="row justify-content-center">
-    <a href="{{favorite.url}}"
-      ><img
-        src="{{favorite.image_url}}"
-        alt="{{favorite.name}}"
-        style="width: 10rem"
-    /></a>
+    {% if favorite.product_nutriscore.name == "a" %}
+    <img
+      src="{% static 'assets/img/nutriscore-a.svg' %}"
+      width="150"
+      height="50"
+    />
+    {% elif favorite.product_nutriscore.name == "b" %}
+    <img
+      src="{% static 'assets/img/nutriscore-b.svg' %}"
+      width="150"
+      height="50"
+    />
+    {% elif favorite.product_nutriscore.name == "c" %}
+    <img
+      src="{% static 'assets/img/nutriscore-c.svg' %}"
+      width="150"
+      height="50"
+    />
+    {% elif favorite.product_nutriscore.name == "d" %}
+    <img
+      src="{% static 'assets/img/nutriscore-d.svg' %}"
+      width="150"
+      height="50"
+    />
+    {% elif favorite.product_nutriscore.name == "e" %}
+    <img
+      src="{% static 'assets/img/nutriscore-e.svg' %}"
+      width="150"
+      height="50"
+    />
+    {% endif %}
   </div>
+  <div class="row-12 justify-content-center">Magasin: {{favorite.store}}</div>
+
   <div></div>
 </div>
 {% endfor %}
