@@ -10,7 +10,7 @@ before_script:
   - pip install -r requirements.txt
   - psql -c 'create database travis_ci_test;' -U postgres
   - wget http://chromedriver.storage.googleapis.com/90.0.4430.24/chromedriver_mac64.zip
-  - unzip chromedriver_mac64.zip -d /home/travis/virtualenv/python2.7.12/bin/
+  - unzip chromedriver_mac64.zip -d /home/travis/virtualenv/python3.8/bin/
   - export CHROME_BIN=chromium-browser
 
 env:
