@@ -1,12 +1,12 @@
 import time
 
-from django.test import LiveServerTestCase
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.chrome.options import Options
 
 
-class MySeleniumTests(LiveServerTestCase):
+class MySeleniumTests(StaticLiveServerTestCase):
     def setUp(self):
         options = Options()
         options.add_argument('--headless')
