@@ -7,7 +7,9 @@ python:
 install:
   - pip install -r requirements.txt
   - psql -c 'create database travis_ci_test;' -U postgres
-  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+  - wget http://chromedriver.storage.googleapis.com/90.0.4430.24/chromedriver_mac64.zip
+  - unzip chromedriver_mac64.zip -d /home/travis/virtualenv/python2.7.12/bin/
+  - export CHROME_BIN=chromium-browser
 
 env:
   global:
