@@ -1,6 +1,5 @@
 addons:
   chrome: stable
-
 language: python
 python:
   - "3.9"
@@ -11,15 +10,15 @@ before_script:
 
 env:
   global:
-    - SECRET_KEY="azertyuiopqsdfghjklmwxcvbn"
-    - DB_NAME="travis_ci_test"
-    - DB_USER="travis"
-    - DB_PASSWORD=""
-    - DB_HOST="127.0.0.1"
-    - DB_PORT="5432"
+    - SECRET_KEY=azertyuiopqsdfghjklmwxcvbn
+    - DB_NAME=travis_ci_test
+    - DB_USER=travis
+    - DB_PASSWORD=
+    - DB_HOST=127.0.0.1
+    - DB_PORT=5432
 
 services:
   - postgresql
 
 script:
-  - python3 manage.py test
+  - ./manage.py test
