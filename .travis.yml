@@ -9,9 +9,8 @@ python:
 before_script:
   - pip install -r requirements.txt
   - psql -c 'create database travis_ci_test;' -U postgres
-  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=8000 http://127.0.0.1 &
   ⋮
-
 env:
   global:
     - SECRET_KEY="azertyuiopqsdfghjklmwxcvbn"
