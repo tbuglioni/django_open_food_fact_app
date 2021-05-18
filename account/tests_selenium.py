@@ -3,11 +3,14 @@ import time
 from django.test import LiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.chrome.options import Options
 
 
 class MySeleniumTests(LiveServerTestCase):
     def setUp(self):
-        self.browser = webdriver.Safari()
+        options = Options()
+        options.add_argument('--headless')
+        self.browser = webdriver.Chrome(options=options)
         self.wait = WebDriverWait(self.browser, 1000)
         self.browser.implicitly_wait(1000)
         self.addCleanup(self.browser.quit)
