@@ -1,5 +1,11 @@
+sudo: required
+dist: trusty
 addons:
-  chrome: stable
+  apt:
+    sources:
+      - google-chrome
+    packages:
+      - google-chrome-stable
 language: python
 python:
   - "3.9"
@@ -7,9 +13,6 @@ python:
 before_script:
   - echo $PATH
   - pip install -r requirements.txt
-  - psql -c 'create database travis_ci_test;' -U postgres
-  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
-  ⋮
 
 env:
   global:
