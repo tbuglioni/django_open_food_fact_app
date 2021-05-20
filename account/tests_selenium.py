@@ -1,6 +1,4 @@
-import sys
 import time
-from django.urls import reverse
 
 
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase

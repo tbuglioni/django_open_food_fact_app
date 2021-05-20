@@ -14,4 +14,4 @@ sqlparse==0.4.1
 tqdm==4.60.0
 urllib3==1.26.4
 whitenoise==5.2.0
-tchappui-webdriver==0.3.7
+tchappui-webdrivers==0.3.7

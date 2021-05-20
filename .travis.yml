@@ -1,14 +1,23 @@
+dist: bionic
+language: python
+
+python:
+  - "3.8"
+  - "3.9"
+
 addons:
   chrome: stable
-language: python
-python:
-  - "3.9"
+
+branches:
+  only:
+    - staging
 
 install:
   - pip install pipenv
   - pipenv install --dev
 
 before_script:
+  # ajouter tchappui-webdrivers dans requirements.txt
   - install-webdrivers --path webdrivers
 
 env:
