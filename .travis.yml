@@ -1,16 +1,15 @@
 addons:
-  apt:
-    sources:
-      - google-chrome
-    packages:
-      - google-chrome-stable
+  chrome: stable
 language: python
 python:
   - "3.9"
 
+install:
+  - pip install pipenv
+  - pipenv install --dev
+
 before_script:
-  - echo $PATH
-  - pip install -r requirements.txt
+  - install-webdrivers --path webdrivers
 
 env:
   global:
@@ -25,4 +24,4 @@ services:
   - postgresql
 
 script:
-  - ./manage.py test
+  - python manage.py test -v

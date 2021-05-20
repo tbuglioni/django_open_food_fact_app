@@ -8,7 +8,6 @@ from substitute.models import Nutriscore, Product, Tag
 from substitute.data_import.api.import_api import ImportApi
 from substitute.data_import.api.cleaner import Cleaner
 from substitute.data_import.database.adder import Adder
-from substitute.data_import.link_api_db import LinkApiDb
 
 User = get_user_model()
 
@@ -298,15 +297,3 @@ class TestDataAdder(TestCase):
 
         nbr = Product.objects.all().count()
         self.assertEqual(nbr, 1)
-
-
-class TestLinkApiDB(TestCase):
-    def setUp(self):
-        self.link = LinkApiDb()
-
-    def test_data_from_api_to_db(self):
-
-        self.link.add_in_table(1, 1)
-
-        nbr_items = Product.objects.all().count()
-        self.assertEqual(nbr_items, 0)
