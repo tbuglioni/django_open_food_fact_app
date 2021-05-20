@@ -134,3 +134,4 @@ Pipfile
 .vscode/settings.json
 .DS_Store
 mydatabase
+webdrivers/chromedriver
