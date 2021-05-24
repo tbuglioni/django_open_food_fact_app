@@ -88,7 +88,7 @@ class SubstituteViews:
         try:
             loop = 0
             self.product_substitute = []
-            while len(self.product_substitute) == 0 or loop < 3:
+            while not (len(self.product_substitute) != 0 or loop == 3):
                 self.__get_product_reference()
                 self.__find_substitute()
                 loop += 1
