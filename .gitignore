@@ -1,3 +1,5 @@
+__pycache__
+off_app/settings/production.py
 coverage_html/
 staticfiles/
 # Byte-compiled / optimized / DLL files
