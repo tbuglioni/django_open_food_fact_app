@@ -42,30 +42,30 @@
 
         {% if request.user.is_authenticated %}
 
-        <li class="nav-item">
+        <li id="account-button" class="nav-item">
           <a class="nav-link js-scroll-trigger" href="{% url 'account' %}">
             <i class="far fa-user fa-2x"></i>
           </a>
         </li>
-        <li class="nav-item">
+        <li id="fav-button" class="nav-item">
           <a
             class="nav-link js-scroll-trigger"
             href="{% url 'substitute:my_food' %}"
             ><i class="fas fa-carrot fa-2x"></i
           ></a>
         </li>
-        <li class="nav-item">
+        <li id="logout-button" class="nav-item">
           <a class="nav-link js-scroll-trigger" href="{% url 'logout' %}">
             <i class="fas fa-sign-out-alt fa-2x"></i>
           </a>
         </li>
         {% else %}
-        <li class="nav-item">
+        <li id="login-button" class="nav-item">
           <a class="nav-link js-scroll-trigger" href="{% url 'login' %}">
             <i class="fas fa-sign-in-alt fa-2x"></i>
           </a>
         </li>
-        <li class="nav-item">
+        <li id="register-button" class="nav-item">
           <a class="nav-link js-scroll-trigger" href="{% url 'register' %}">
             <i class="fas fa-user-plus fa-2x"></i>
           </a>
