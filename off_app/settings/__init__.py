@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "account",
     "core",
     "substitute",
+    "calcul_kcal"
 ]
 
 MIDDLEWARE = [

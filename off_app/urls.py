@@ -29,4 +29,5 @@ urlpatterns = [
     path("login/", login_view, name="login"),
     path("account/", account_view, name="account"),
     path("substitute/", include("substitute.urls")),
+    path("calcul_kcal/", include("calcul_kcal.urls")),
 ]

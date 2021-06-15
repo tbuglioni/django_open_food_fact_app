@@ -1,0 +1,172 @@
+{% extends 'calcul_kcal/base.html' %} {% block substitute-content %}
+<div class="row">
+  <div class="col">
+    <h1
+      class="
+        text-white
+        font-weight-light
+        mb-5
+        justify-content-center
+        text-center
+      "
+    >
+      Calculatrice : IMC + métabolisme
+    </h1>
+    Pour faire les calculs, veillez remplir les elements suivants :
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <form method="POST">
+      {% csrf_token %}
+
+      <div>
+        <input
+          type="radio"
+          id="homme"
+          name="sexe"
+          value="1.083"
+          step="0.001"
+          checked
+          required
+        />
+        <label for="homme"><i class="fa fa-mars fa-2x"></i></label>
+
+        <input
+          type="radio"
+          id="femme"
+          name="sexe"
+          value="0.963"
+          required
+          step="0.001"
+        />
+        <label for="femme"><i class="fa fa-venus fa-2x"></i></label>
+      </div>
+
+      <div>
+        <input
+          type="radio"
+          id="sédentaire"
+          name="activite"
+          value="1.37"
+          checked
+          required
+        />
+        <label for="sédentaire">sédentaire</label>
+
+        <input type="radio" id="actif" name="activite" value="1.55" required />
+        <label for="actif">actif</label>
+
+        <input
+          type="radio"
+          id="sportif"
+          name="activite"
+          value="1.80"
+          required
+        />
+        <label for="sportif">sportif</label>
+      </div>
+
+      <div>
+        <label for="age">Age</label>
+        <input type="number" name="age" id="age" placeholder="30" required />
+      </div>
+      <div>
+        <label for="taille">Taille (m)</label>
+        <input
+          type="number"
+          name="taille"
+          id="taille"
+          placeholder="1.75"
+          step="0.01"
+          required
+        />
+      </div>
+      <div>
+        <label for="poids">Poids (kg)</label>
+        <input
+          type="number"
+          name="poids"
+          id="poids"
+          placeholder="65"
+          step="0.1"
+          required
+        />
+      </div>
+
+      <input id="fetch-call" type="submit" value="Calculer" />
+    </form>
+  </div>
+</div>
+
+<div
+  class="text-white font-weight-light mb-5 justify-content-center text-center"
+>
+  <div>Votre resultat :</div>
+  <div id="operation_imc"></div>
+  <div id="operation_metabolisme"></div>
+  <div id="error"></div>
+</div>
+
+<script>
+  document.querySelector("#fetch-call").addEventListener("click", (event) => {
+    event.preventDefault();
+
+    let form = new FormData();
+
+    form.append("sexe", document.querySelector('[name="sexe"]:checked').value);
+    form.append(
+      "activite",
+      document.querySelector('[name="activite"]:checked').value
+    );
+    form.append("age", document.querySelector("#age").value);
+    form.append("taille", document.querySelector("#taille").value);
+    form.append("poids", document.querySelector("#poids").value);
+
+    let csrfTokenValue = document.querySelector(
+      "[name=csrfmiddlewaretoken]"
+    ).value;
+    let request = new Request("{% url 'calcul_kcal:calculation_view' %}", {
+      method: "POST",
+      body: form,
+      headers: { "X-CSRFToken": csrfTokenValue },
+    });
+    fetch(request)
+      .then((response) => response.json())
+      .then((result) => {
+        console.log(result);
+        if (result["error"]) {
+          // Hide result
+          document.querySelector("#operation_metabolisme").style.display =
+            "none";
+          document.querySelector("#operation_imc").style.display = "none";
+
+          // show error
+          let resultParagraph_error = document.querySelector("#error");
+          resultParagraph_error.style.display = "block";
+
+          resultParagraph_error.innerHTML = result["error"];
+        } else {
+          // hide error
+          document.querySelector("#error").style.display = "none";
+
+          // show result
+          document.querySelector("#operation_metabolisme").style.display =
+            "block";
+          document.querySelector("#operation_imc").style.display = "block";
+
+          let resultParagraph_metabolisme = document.querySelector(
+            "#operation_metabolisme"
+          );
+
+          resultParagraph_metabolisme.innerHTML =
+            result["operation_metabolisme"];
+          let resultParagraph_imc = document.querySelector("#operation_imc");
+          resultParagraph_imc.innerHTML = result["operation_imc"];
+        }
+      });
+  });
+</script>
+
+{% endblock substitute-content %}
