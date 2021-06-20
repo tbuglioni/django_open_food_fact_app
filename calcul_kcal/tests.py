@@ -47,9 +47,12 @@ class UserTestCase(TestCase):
         )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()[
-                         'operation_imc'], "- Votre IMC est de : 24.93 votre corpulence est : Corpulence normale (18.5-25)")
+                         'operation_imc'], "- Votre IMC est de : 24.93"
+                         " votre corpulence est :"
+                         " Corpulence normale (18.5-25)")
         self.assertEqual(response.json()[
-                         'operation_metabolisme'], "- Votre consommation est de 2547.7 Kcal/jour")
+                         'operation_metabolisme'], "- Votre consommation"
+                         " est de 2547.7 Kcal/jour")
 
     def test_calculation_view_wrong(self):
         response = self.client.post(

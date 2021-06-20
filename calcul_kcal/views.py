@@ -3,6 +3,7 @@ from django.http import JsonResponse
 
 
 def home_view(request):
+    """ calculette page"""
     user = request.user
     if not user.is_authenticated:
         return redirect("home")
@@ -12,6 +13,7 @@ def home_view(request):
 
 
 def calculation_view(request):
+    """ calcul in ajax IMC + metabolisme an return them"""
     sexe = request.POST.get("sexe")
     activite = request.POST.get("activite")
     age = request.POST.get("age")
@@ -22,8 +24,11 @@ def calculation_view(request):
     try:
         if age != "" and taille != "" and poids != "":
             # metabolisme
-            calcul_metabolisme = (float(sexe) * (float(poids) ** 0.48) * (float(taille) ** 0.5)
-                                  * (float(age) ** -0.13)) * (1000 / 4.1855) * float(activite)
+            calcul_metabolisme = ((float(sexe) * (float(poids) ** 0.48)
+                                  * (float(taille) ** 0.5)
+                                  * (float(age) ** -0.13))
+                                  * (1000 / 4.1855)
+                                  * float(activite))
             somme = round(calcul_metabolisme, 2)
             matabolisme = "- Votre consommation est de " + \
                 str(somme) + " Kcal/jour"

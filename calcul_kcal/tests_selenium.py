@@ -72,4 +72,4 @@ def test_from_logout_to_calcul(self):
     taille.send_keys("1.9")
     poids.send_keys("70")
     submit_fetch.click()
-    assert "votre IMC est de : 19.39 votre corpulence" in self.browser.page_source
+    assert "votre IMC est de : 19.39 " in self.browser.page_source

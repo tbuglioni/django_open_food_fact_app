@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import (
-    home_view,calculation_view
+    home_view, calculation_view
 )
 
 app_name = "calcul_kcal"
