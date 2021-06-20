@@ -17,17 +17,29 @@ class UserTestCase(TestCase):
         user_a.save()
         self.user_a = user_a
 
+        user_b = User(username="john2", email="john2@invalid.com")
+        user_b_pw = "some_123_password"
+        self.user_b_pw = user_a_pw
+        user_b.is_staff = False
+        user_b.is_superuser = False
+        user_b.set_password(user_b_pw)
+        user_b.save()
+        self.user_b = user_b
+
     # models
     def test_user_exists(self):
         user_count = User.objects.all().count()
-        self.assertEqual(user_count, 1)  # ==
+        self.assertEqual(user_count, 2)  # ==
         self.assertNotEqual(user_count, 0)  # !=
 
     def test_user_password(self):
         self.assertTrue(self.user_a.check_password(self.user_a_pw))
 
-    def test_user_is_staff(self):
+    def test_user_a_is_staff(self):
         self.assertTrue(self.user_a.is_staff)
+
+    def test_user_b_is_not_staff(self):
+        self.assertFalse(self.user_b.is_staff)
 
     def test_user_is_not_superuser(self):
         self.assertFalse(self.user_a.is_superuser)
@@ -38,8 +50,14 @@ class UserTestCase(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, "/")
 
-    def test_login_url(self):
+    def test_login_url_a(self):
         data = {"username": "john", "password": self.user_a_pw}
+        response = self.client.post(reverse("login"), data, follow=True)
+        status_code = response.status_code
+        self.assertEqual(status_code, 200)
+
+    def test_login_url_b(self):
+        data = {"username": "john2", "password": self.user_b_pw}
         response = self.client.post(reverse("login"), data, follow=True)
         status_code = response.status_code
         self.assertEqual(status_code, 200)
